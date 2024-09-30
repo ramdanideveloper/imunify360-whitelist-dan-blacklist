@@ -9,6 +9,6 @@ Whitelist/Blacklist IP Imunify360
 5. Whitelist IP Custom Block Port 423, 2087, 7080 dan 2086
 6. Hapus IP dalam whiteist
 7. Hapus IP dalam blacklist
-8. 8. Cek white/black list IP
+8. Cek white/black list IP
 9. Whitelist IP Dinamic Custom
 
