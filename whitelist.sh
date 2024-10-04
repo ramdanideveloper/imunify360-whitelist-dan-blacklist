@@ -88,7 +88,7 @@ elif [ "$select" = "2" ]; then
     else
         echo "Gagal menambahkan IP $IP ke whitelist, silakan periksa kembali IP-nya dan pastikan sudah sesuai."
     fi
-fi
+
 
 # jika pilih 3 hapus IP dari custom port
 elif [ "$select" = "3" ]; then
