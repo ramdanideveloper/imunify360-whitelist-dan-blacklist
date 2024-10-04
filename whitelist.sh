@@ -35,8 +35,8 @@ if [ "$select" = "5" ] || [ "$select" = "3" ]; then
     read -p "Masukan Port = " port
 fi
 
-# Hanya minta "note" jika pilihannya adalah 1, 2, 4, 5, 6 dan 7
-if [ "$select" = "1" ] || [ "$select" = "2" ] || [ "$select" = "4" ] || [ "$select" = "5" ] || [ "$select" = "5" ] || [ "$select" = "9" ]; then
+# Hanya minta "note" jika pilihannya adalah 1, 2, 4, 5, dan 9
+if [ "$select" = "1" ] || [ "$select" = "2" ] || [ "$select" = "4" ] || [ "$select" = "5" ] || [ "$select" = "9" ]; then
     read -p "Masukan Note = " note
 fi
 # jika pilih 1 untuk whitelist static ke port 287
