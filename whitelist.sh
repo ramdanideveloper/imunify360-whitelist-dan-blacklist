@@ -64,7 +64,10 @@ if [ "$select" = "1" ]; then
 #jika pilih 2 whitelist 24 jam dinamis
 elif [ "$select" = "2" ]; then
 
-    if imunify360-agent ip-list local list --by-ip "$IP"; then
+    # Cek apakah IP ada di daftar
+    IP_CHECK=$(imunify360-agent ip-list local list --by-ip "$IP" 2>/dev/null)
+    
+    if [[ "$IP_CHECK" == *"$IP"* ]]; then
         echo "IP $IP sudah ada di daftar. Menghapus terlebih dahulu..."
         imunify360-agent ip-list local delete --purpose white "$IP" >/dev/null 2>&1
         if [ $? -eq 0 ]; then
@@ -77,13 +80,15 @@ elif [ "$select" = "2" ]; then
         echo "IP $IP belum ada di daftar. Menambahkan IP baru..."
     fi
 
+    # Tambahkan IP ke whitelist
     imunify360-agent ip-list local add --purpose white "$IP" --comment "$note" --expiration $(($(date "+%s")+86400)) --full-access >/dev/null 2>&1
 
     if [ $? -eq 0 ]; then
         echo "IP $IP telah ditambahkan ke whitelist dengan catatan '$note' dan kadaluarsa dalam 24 jam."
     else
-        echo "Gagal menambahkan IP $IP ke whitelist silakan periksa kembali IP nya pastikan sudah sesuai."
+        echo "Gagal menambahkan IP $IP ke whitelist, silakan periksa kembali IP-nya dan pastikan sudah sesuai."
     fi
+fi
 
 # jika pilih 3 hapus IP dari custom port
 elif [ "$select" = "3" ]; then
