@@ -185,26 +185,32 @@ fi
 elif [ "$select" = "9" ]; then
 
     validate_input() {
-    if [[ "$1" =~ ^[1-5]$ ]]; then
-        return 0  # Valid
-    else
-        return 1  # Tidak valid
-    fi
-    }
-       if ! validate_input "$hari"; then
-    echo "Pilihan tidak valid! Harap pilih nomor antara 1 sampai 5."
-    exit 1
+        if [[ "$1" =~ ^[1-5]$ ]]; then
+            return 0  # Valid
+        else
+            return 1  # Tidak valid
         fi
+    }
 
-# Menghitung jumlah detik untuk expiration berdasarkan pilihan hari
+    # Validasi input hari
+    if ! validate_input "$hari"; then
+        echo "Pilihan tidak valid! Harap pilih nomor antara 1 sampai 5."
+        exit 1
+    fi
+
+    # Menghitung jumlah detik untuk expiration berdasarkan pilihan hari
     case "$hari" in
-    1) expiration_seconds=$((86400)) ;; # 1 hari = 86400 detik
-    2) expiration_seconds=$((86400 * 2)) ;; # 2 hari
-    3) expiration_seconds=$((86400 * 3)) ;; # 3 hari
-    4) expiration_seconds=$((86400 * 4)) ;; # 4 hari
-    5) expiration_seconds=$((86400 * 5)) ;; # 5 hari
-    esac 
-if imunify360-agent ip-list local list --by-ip "$IP"; then
+        1) expiration_seconds=$((86400)) ;;    # 1 hari = 86400 detik
+        2) expiration_seconds=$((86400 * 2)) ;; # 2 hari
+        3) expiration_seconds=$((86400 * 3)) ;; # 3 hari
+        4) expiration_seconds=$((86400 * 4)) ;; # 4 hari
+        5) expiration_seconds=$((86400 * 5)) ;; # 5 hari
+    esac
+
+    # Mengecek apakah IP ada di whitelist
+    IP_CHECK=$(imunify360-agent ip-list local list --by-ip "$IP" 2>/dev/null)
+    
+    if [[ "$IP_CHECK" == *"$IP"* ]]; then
         echo "IP $IP sudah ada di daftar. Menghapus terlebih dahulu..."
         imunify360-agent ip-list local delete --purpose white "$IP" >/dev/null 2>&1
         if [ $? -eq 0 ]; then
@@ -217,14 +223,14 @@ if imunify360-agent ip-list local list --by-ip "$IP"; then
         echo "IP $IP belum ada di daftar. Menambahkan IP baru..."
     fi
 
-    # Menambahkan IP dengan aturan baru
+    # Menambahkan IP ke whitelist dengan durasi sesuai pilihan hari
     imunify360-agent ip-list local add --purpose white "$IP" --comment "$note" --expiration $(($(date "+%s") + $expiration_seconds)) --full-access >/dev/null 2>&1
 
-    # Cek apakah penambahan IP berhasil
+    # Mengecek apakah penambahan IP berhasil
     if [ $? -eq 0 ]; then
         echo "IP $IP telah ditambahkan ke whitelist dengan catatan '$note' dan kadaluarsa dalam $hari hari."
     else
-        echo "Gagal menambahkan IP $IP ke whitelist silakan periksa kembali IP nya pastikan sudah sesuai."
+        echo "Gagal menambahkan IP $IP ke whitelist, silakan periksa kembali IP-nya dan pastikan sudah sesuai."
     fi
 
 else
