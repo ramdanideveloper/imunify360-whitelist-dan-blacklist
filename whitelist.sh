@@ -64,7 +64,7 @@ if [ "$select" = "1" ]; then
 #jika pilih 2 whitelist 24 jam dinamis
 elif [ "$select" = "2" ]; then
 
-    if imunify360-agent ip-list local list | grep -q "$IP"; then
+    if imunify360-agent ip-list local list --by-ip "$IP"; then
         echo "IP $IP sudah ada di daftar. Menghapus terlebih dahulu..."
         imunify360-agent ip-list local delete --purpose white "$IP" >/dev/null 2>&1
         if [ $? -eq 0 ]; then
@@ -199,7 +199,7 @@ elif [ "$select" = "9" ]; then
     4) expiration_seconds=$((86400 * 4)) ;; # 4 hari
     5) expiration_seconds=$((86400 * 5)) ;; # 5 hari
     esac 
-if imunify360-agent ip-list local list | grep -q "$IP"; then
+if imunify360-agent ip-list local list --by-ip "$IP"; then
         echo "IP $IP sudah ada di daftar. Menghapus terlebih dahulu..."
         imunify360-agent ip-list local delete --purpose white "$IP" >/dev/null 2>&1
         if [ $? -eq 0 ]; then
