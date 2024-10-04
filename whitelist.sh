@@ -134,7 +134,7 @@ elif [ "$select" = "5" ]; then
     fi
 # jika pilih 6 hapus ip dari list whitelist dinamis
 elif [ "$select" = "6" ]; then
-    imunify360-agent ip-list local list --purpose white | grep -w $IP > /dev/null
+    imunify360-agent ip-list local list --purpose white --by-ip $IP > /dev/null
 
     if [ $? -eq 0 ]; then
         # Jika IP ditemukan, hapus dari whitelist
@@ -150,7 +150,7 @@ elif [ "$select" = "6" ]; then
     fi
 # jika pilih 7 hapus ip dari blacklist
 elif [ "$select" = "7" ]; then
-    imunify360-agent ip-list local list --purpose drop | grep -w $IP > /dev/null
+    imunify360-agent ip-list local list --purpose drop --by-ip $IP > /dev/null
 
     if [ $? -eq 0 ]; then
 
